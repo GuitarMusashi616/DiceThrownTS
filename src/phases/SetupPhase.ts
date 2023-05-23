@@ -1,3 +1,11 @@
+import { IGameController } from "../game/IGameController";
+import { Player } from "../model/Player";
+import { IPhase } from "./IPhase";
+
+
+const PLAYER_MAX_HEALTH = 50;
+const STARTING_DRAW_CARD_COUNT = 4;
+// manipulates what the controller controls by doing setup specific stuff
 export class SetupPhase implements IPhase {
     private controller: IGameController;
 
@@ -5,18 +13,24 @@ export class SetupPhase implements IPhase {
         this.controller = controller;
     }
 
-    handle(): void {
-        const players = this.controller.model.getPlayers();
-        for (const player in players) {
-            player.setHealth(50);
-            this.drawCards(player);
+    handle(event: IEvent): void {
+        this.firstDraw();
+    }
+
+    private initPlayersHealth() {
+        for (const player of this.controller.players.getPlayers()) {
+            this.drawCards(player, STARTING_DRAW_CARD_COUNT);
         }
+    }
+
+    private firstDraw() {
+        this.controller.players
     }
 
     drawCards(player: Player, count: number): void {
         for (let i = 0; i < count; i++) {
-            const card = this.cardPile.draw();
-            player.addCard(card);
+            const card = this.controller.cardPile.draw();
+            player.cards.push(card)
         }
     }
 
