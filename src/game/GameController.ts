@@ -4,7 +4,6 @@ import { ICardPile } from "../model/ICardPile";
 import { IPlayerManager } from "../model/IPlayerManager";
 import { IPhase } from "../phases/IPhase";
 import { MainPhase } from "../phases/MainPhase";
-import { SetupPhase } from "../phases/SetupPhase";
 import { ICardExecutor } from "./ICardExecutor";
 import { IGameController } from "./IGameController";
 
@@ -21,7 +20,7 @@ export class GameController implements IGameController {
         this.players = players;
         this.cardPile = cardPile;
         this.cardExecutor = cardExecutor;
-        this.phase = new MainPhase(this);
+        this.phase = new MainPhase(this, false);
     }
 
     handle(event: IEvent): void {

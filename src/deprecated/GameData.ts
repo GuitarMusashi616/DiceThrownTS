@@ -5,7 +5,7 @@ import { Player } from "../model/Player";
 export class GameData implements IGameData {
     private players: Array<Player>;
     private whoseTurn: number;
-    private cardPile: ICardPile;
+    // private cardPile: ICardPile;
 
     constructor(players: Array<Player>, cardPile: ICardPile) {
         this.players = players;

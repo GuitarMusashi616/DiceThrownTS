@@ -1,16 +1,5 @@
 class Manager {
-    constructor(IThing, IStuff) {
-        
-    }
-
     public name() {
-        // first initialize the players
-        player1 = Player()
-        player2 = Player()
-
-        // next do a battle?
-
-        player1.battle(player2)
         
         // after set up what to do?
 

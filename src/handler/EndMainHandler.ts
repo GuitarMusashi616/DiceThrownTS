@@ -14,6 +14,6 @@ export class EndMainHandler implements IEventHandler<End> {
     }
 
     handle(event: End): void {
-        this.controller.phase = this.hasDoneCombat? new OffensivePhase(this.controller) : new DiscardPhase(this.controller);
+        this.controller.phase = this.hasDoneCombat? new DiscardPhase(this.controller) : new OffensivePhase(this.controller);
     }
 }

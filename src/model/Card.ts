@@ -1,3 +1,5 @@
+import { CardType } from "./CardType";
+
 /**
  * Parameter class for cards
  */

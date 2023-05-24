@@ -1,4 +1,5 @@
 import { Card } from "./Card";
+import { CardType } from "./CardType";
 import { ICardPile } from "./ICardPile";
 
 export class CardPile implements ICardPile {

@@ -1,13 +1,13 @@
 import * as Phaser from 'phaser';
-import {Dice} from './package/dice'
+import { main } from './main';
 
 export default class Demo extends Phaser.Scene
 {
     constructor ()
     {
         super('demo');
-        const dice = new Dice();
-        console.log(dice);
+        // const dice = new Dice();
+        // console.log(dice);
     }
 
     preload ()
@@ -48,3 +48,4 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
+main();
