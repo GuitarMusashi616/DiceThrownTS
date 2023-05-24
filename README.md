@@ -47,3 +47,7 @@ Note that due to the build process involved, it can take around 20 seconds to bu
   * @rollup/plugin-terser 0.4.0
   * @rollup/plugin-typescript 11.1.0
   * rollup-plugin-serve 2.0.2
+=======
+# DiceThrownTS
+Typescript version of DiceThrown
+>>>>>>> 74b15eead35f28cc6959ebb417cf9f870f3386b4
