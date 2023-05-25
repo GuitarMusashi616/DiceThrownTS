@@ -1,51 +1,45 @@
+import { IFactory } from "../common/IFactory";
 import { ICardPile } from "./ICardPile";
-import { IPlayerFactory } from "./IPlayerFactory";
 import { IPlayerManager } from "./IPlayerManager";
 import { Player } from "./Player";
 import { PlayerManager } from "./PlayerManager";
 
-const PLAYER_COUNT = 2;
 const PLAYER_MAX_HEALTH = 50;
 const STARTING_DRAW_CARD_COUNT = 4;
 
 /**
  * Responsible for initializing players and configuring IPlayerManager
  */
-export class PlayerFactory implements IPlayerFactory {
-    private cardPile: ICardPile;
+export class PlayerFactory implements IFactory<IPlayerManager> {
+    private players: Player[];
 
-    constructor(cardPile: ICardPile) {
-        this.cardPile = cardPile;
+    constructor(players: Player[]) {
+        this.players = players;
     }
 
-    initPlayer(): Player {
-        const player = new Player();
+    initPlayer(player: Player) {
         player.health = PLAYER_MAX_HEALTH;
         for (let i = 0; i < STARTING_DRAW_CARD_COUNT; i++) {
-            const card = this.cardPile.draw();
+            const card = player.cardPile.draw();
             player.cards.push(card);
         }
         return player
     }
     
-    initPlayers(): Player[] {
-        let players: Player[] = []
-
-        for (let i = 0; i < PLAYER_COUNT; i++) {
-            players.push(this.initPlayer());
+    initPlayers() {
+        for (const player of this.players) {
+            this.initPlayer(player);
         }
-
-        return players
     }
 
     chooseWhoGoesFirst(players: Player[]): number {
         return Math.floor(Math.random() * players.length);
     }
 
-    getPlayerManager(): IPlayerManager {
-        const players = this.initPlayers();
-        const whoseTurn = this.chooseWhoGoesFirst(players);
-        const playerManager = new PlayerManager(players, whoseTurn);
+    create(): IPlayerManager {
+        this.initPlayers();
+        const whoseTurn = this.chooseWhoGoesFirst(this.players);
+        const playerManager = new PlayerManager(this.players, whoseTurn);
         return playerManager
     }
 
