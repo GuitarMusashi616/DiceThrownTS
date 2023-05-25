@@ -5,11 +5,13 @@ import { CardType } from "./CardType";
  */
 export class Card {
     name: string;
+    description: string;
     type: CardType;
     cpCost: number;
 
-    constructor(name: string, type: CardType, cpCost: number) {
+    constructor(name: string, description: string, type: CardType, cpCost: number) {
         this.name = name;
+        this.description = description;
         this.type = type;
         this.cpCost = cpCost;
     }

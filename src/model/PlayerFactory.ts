@@ -42,7 +42,7 @@ export class PlayerFactory implements IPlayerFactory {
         return Math.floor(Math.random() * players.length);
     }
 
-    getPlayers(): IPlayerManager {
+    getPlayerManager(): IPlayerManager {
         const players = this.initPlayers();
         const whoseTurn = this.chooseWhoGoesFirst(players);
         const playerManager = new PlayerManager(players, whoseTurn);

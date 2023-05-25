@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { main } from './main';
+import { main, testBasicOffense } from './main';
 
 export default class Demo extends Phaser.Scene
 {
@@ -48,4 +48,4 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
-main();
+testBasicOffense();

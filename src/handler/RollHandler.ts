@@ -5,6 +5,7 @@ import { SellCard } from "../event/SellCard";
 import { IGameController } from "../game/IGameController";
 import { Card } from "../model/Card";
 import { Player } from "../model/Player";
+import { EventType } from "../subscribers/EventType";
 import { IEventHandler } from "./IEventHandler";
 
 export class RollHandler implements IEventHandler<Roll> {
@@ -14,23 +15,8 @@ export class RollHandler implements IEventHandler<Roll> {
         this.controller = controller;
     }
 
-    handle(event: SellCard): void {
-        let chosenCard = event.card;
-        let player = this.controller.players.getCurrentPlayer()
-
-        if (!this.hasInHand(player, chosenCard)) {
-            return;
-        }
-
-        this.discard(player, chosenCard);
-    }
-
-    private hasInHand(player: Player, card: Card): boolean {
-        return player.cards.includes(card);
-    }
-
-    private discard(player: Player, card: Card) {
-        const index = player.cards.indexOf(card);
-        player.cards.splice(index, 1);
+    handle(event: Roll): void {
+        this.controller.dice.roll(event.whichDice);
+        this.controller.events.notify(EventType.Roll);
     }
 }

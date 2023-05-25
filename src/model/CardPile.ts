@@ -13,8 +13,36 @@ export class CardPile implements ICardPile {
 
     private initDrawPile(): Card[] {
         const drawPile = [
-            new Card('card 1', CardType.HeroUpgrade, 3),
-            new Card('card 2', CardType.MainPhaseAction, 2),
+            new Card(
+                "FEELIN' GOOD!", 
+                "Roll 3 <Dice>:\nHeal <1Heart> + <2Heart> x <HeartDice>.", 
+                CardType.InstantAction, 
+                0,
+            ),
+            new Card(
+                "TRANSFERENCE!",
+                "Transfer 1 status effect token\nfrom a chosen player to another\nchosen player.",
+                CardType.MainPhaseAction,
+                2,
+            ),
+            new Card(
+                "WHAT STATUS EFFECTS?",
+                "Remove all status effect tokens\nfrom a chosen player",
+                CardType.MainPhaseAction,
+                2,
+            ),
+            new Card(
+                "VEGAS BABY!",
+                "Roll 1 <Dice>:\nGame 1/2 the value as <CP>\n(rounded up).",
+                CardType.MainPhaseAction,
+                0,
+            ),
+            new Card(
+                "GET THAT OUTA HERE!",
+                "Remove a status effect\ntoken from a chosen player.",
+                CardType.MainPhaseAction,
+                1,
+            ),
         ]
 
         this.shuffle<Card>(drawPile);

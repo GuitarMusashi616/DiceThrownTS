@@ -13,32 +13,32 @@ export class PickCardHandler implements IEventHandler<PickCard> {
     }
 
     handle(event: PickCard): void {
-        let chosenCard = event.card;
         let player = this.controller.players.getCurrentPlayer()
+        let chosenCard = this.getCard(player, event.index);
 
-        if (!this.hasInHand(player, chosenCard) || !this.canAfford(player, chosenCard)) {
+        if (chosenCard === undefined || this.cantAfford(player, chosenCard)) {
             return;
         }
 
         this.spendCPFor(player, chosenCard);
-        this.discard(player, chosenCard);
+        this.discard(player, event.index);
+
         this.controller.cardExecutor.execute(player, chosenCard)
     }
 
-    private hasInHand(player: Player, card: Card): boolean {
-        return player.cards.includes(card);
+    private getCard(player: Player, cardIndex: number): Card | undefined {
+        return player.cards[cardIndex];
     }
 
-    private canAfford(player: Player, card: Card): boolean  {
-        return player.cp > card.cpCost;
+    private cantAfford(player: Player, card: Card) {
+        return card.cpCost > player.cp;
     }
 
     private spendCPFor(player: Player, card: Card): void {
         player.cp -= card.cpCost;
     }
 
-    private discard(player: Player, card: Card) {
-        const index = player.cards.indexOf(card);
-        player.cards.splice(index, 1);
+    private discard(player: Player, cardIndex: number) {
+        player.cards.splice(cardIndex, 1);
     }
 }
