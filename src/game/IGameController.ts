@@ -6,6 +6,7 @@ import { IEvent } from "../event/IEvent";
 import { ICardExecutor } from "./ICardExecutor";
 import { IEventManager } from "../subscribers/IEventManager";
 import { IDiceManager } from "../model/IDiceManager";
+import { ICombatResolver } from "../model/ICombatResolver";
 
 
 /**
@@ -14,10 +15,10 @@ import { IDiceManager } from "../model/IDiceManager";
 export interface IGameController {
     players: IPlayerManager;
     dice: IDiceManager;
-    cardPile: ICardPile;
     phase: IPhase;
     cardExecutor: ICardExecutor;
     events: IEventManager;
+    combatResolver: ICombatResolver;
 
 
     handle(event: IEvent): void;

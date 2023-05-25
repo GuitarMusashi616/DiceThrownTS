@@ -1,6 +1,7 @@
 import { GameData } from "../deprecated/GameData";
 import { IEvent } from "../event/IEvent";
 import { ICardPile } from "../model/ICardPile";
+import { ICombatResolver } from "../model/ICombatResolver";
 import { IDiceManager } from "../model/IDiceManager";
 import { IPlayerManager } from "../model/IPlayerManager";
 import { IPhase } from "../phases/IPhase";
@@ -15,17 +16,17 @@ import { IGameController } from "./IGameController";
 export class GameController implements IGameController {
     players: IPlayerManager;
     dice: IDiceManager;
-    cardPile: ICardPile;
     cardExecutor: ICardExecutor;
     events: IEventManager;
+    combatResolver: ICombatResolver;
     phase: IPhase;
 
-    constructor(players: IPlayerManager, dice: IDiceManager, cardPile: ICardPile, cardExecutor: ICardExecutor, events: IEventManager) {
+    constructor(players: IPlayerManager, dice: IDiceManager, cardExecutor: ICardExecutor, events: IEventManager, combatResolver: ICombatResolver) {
         this.players = players;
         this.dice = dice;
-        this.cardPile = cardPile;
         this.cardExecutor = cardExecutor;
         this.events = events
+        this.combatResolver = combatResolver;
         this.phase = new MainPhase(this, false);
     }
 

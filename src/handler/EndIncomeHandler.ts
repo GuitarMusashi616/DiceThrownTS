@@ -3,6 +3,7 @@ import { IGameController } from "../game/IGameController";
 import { IncomePhase } from "../phases/IncomePhase";
 import { MainPhase } from "../phases/MainPhase";
 import { UpkeepPhase } from "../phases/UpkeepPhase";
+import { EventType } from "../subscribers/EventType";
 import { IEventHandler } from "./IEventHandler";
 
 export class EndIncomeHandler implements IEventHandler<End> {
@@ -14,5 +15,6 @@ export class EndIncomeHandler implements IEventHandler<End> {
 
     handle(event: End): void {
         this.controller.phase = new MainPhase(this.controller, false);
+        this.controller.events.notify(EventType.NewPhase);
     }
 }

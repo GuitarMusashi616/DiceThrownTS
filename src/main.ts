@@ -1,3 +1,6 @@
+import { IAbilityManager } from "./ability/IAbilityManager";
+import { BarbarianAbilitiesFactory } from "./barbarian/BarbarianAbilitiesFactory";
+import { IFactory } from "./common/IFactory";
 import { End } from "./event/End";
 import { PickCard } from "./event/PickCard";
 import { SellCard } from "./event/SellCard";
@@ -6,21 +9,26 @@ import { GameController } from "./game/GameController";
 import { ICardExecutor } from "./game/ICardExecutor";
 import { IGameController } from "./game/IGameController";
 import { CardPile } from "./model/CardPile";
+import { CombatResolver } from "./model/CombatResolver";
 import { DiceManager } from "./model/DiceManager";
 import { ICardPile } from "./model/ICardPile";
+import { ICombatResolver } from "./model/ICombatResolver";
 import { IDiceManager } from "./model/IDiceManager";
-import { IPlayerFactory } from "./model/IPlayerFactory";
 import { IPlayerManager } from "./model/IPlayerManager";
 import { Player } from "./model/Player";
 import { PlayerFactory } from "./model/PlayerFactory";
 import { PlayerManager } from "./model/PlayerManager";
 import { EventManager } from "./subscribers/EventManager";
 import { IEventManager } from "./subscribers/IEventManager";
+import { AbilitySelector } from "./view/AbilitySelector";
+import { AbilityView } from "./view/AbilityView";
 import { DiceView } from "./view/DiceView";
 import { EndButton } from "./view/EndButton";
+import { IAbilityView } from "./view/IAbilityView";
 import { IDiceView } from "./view/IDiceView";
 import { IEndButton } from "./view/IEndButton";
 import { IRollButton } from "./view/IRollButton";
+import { PhaseView } from "./view/PhaseView";
 import { RollButton } from "./view/RollButton";
 
 
@@ -64,13 +72,19 @@ export function main() {
 // }
 
 function getController(): IGameController {
-    const cardPile: ICardPile = new CardPile();
-    const playerFactory: IPlayerFactory = new PlayerFactory(cardPile);
-    const playerManager: IPlayerManager = playerFactory.getPlayerManager();
+    const barbarianCardPile: ICardPile = new CardPile();
+    const barbarianAbilities: IAbilityManager = new BarbarianAbilitiesFactory().create();
+    const players = [
+        new Player(barbarianAbilities, barbarianCardPile),
+    ]
+    const playerFactory: IFactory<IPlayerManager> = new PlayerFactory(players);
+    const playerManager: IPlayerManager = playerFactory.create();
+
     const diceManager: IDiceManager = new DiceManager();
     const cardExecutor: ICardExecutor = new CardExecutor();
     const eventManager: IEventManager = new EventManager();
-    const controller: IGameController = new GameController(playerManager, diceManager, cardPile, cardExecutor, eventManager);
+    const combatResolver: ICombatResolver = new CombatResolver();
+    const controller: IGameController = new GameController(playerManager, diceManager, cardExecutor, eventManager, combatResolver);
     return controller;
 }
 
@@ -105,52 +119,61 @@ export function testBasicOffense() {
 
     const rollButton: IRollButton = new RollButton(controller);
     const diceView: IDiceView = new DiceView(controller);
+    const abilityView: IAbilityView = new AbilityView(controller);
+    const abilitySelector: AbilitySelector = new AbilitySelector(controller);
+    const phaseView: PhaseView = new PhaseView(controller);
     const endButton: IEndButton = new EndButton(controller);
 
-    console.log(controller.phase.constructor.name)
-    endButton.click();  // skip main phase
-    console.log(controller.phase.constructor.name)
-
-
     controller.events.subscribe(diceView);
+    controller.events.subscribe(abilityView);
+    controller.events.subscribe(phaseView);
+
+
+    endButton.click();  // skip main phase
+
+
     rollButton.click([true, true, true, true, true, true]);  // sends rollEvent to controller
     // controller.handle(Roll) - called implicitly
 
     // diceView.notify(Events.Roll or Roll) - called implicitly
-    // diceView.print() called
+    // diceView.print() called (show the swords / hearts based on hero)
+
+    // abilityView should listen for a dice roll?
+    // check if the phase is offensive
+    // how to tell which player's turn? player manager
+    // abilityView.notify() -> return abilities that are playable
+    abilitySelector.select(0)  // unique ability names for heros? or do it index based left-right top-bottom?
+    // tell user if not valid and act like nothing happened
+
+    // endButton.click()
+    // tell user that you must pick an offensive ability?
+
 
     // try again
     rollButton.click([true, false, false, false, false, true]);  // sends rollEvent to controller
 
 
     endButton.click();
-    console.log(controller.phase.constructor.name)
     // onto defense phase
 
     rollButton.click([true, false, false, false, false, true])
 
     endButton.click();
-    console.log(controller.phase.constructor.name)
     // onto main phase 2
 
     endButton.click();
-    console.log(controller.phase.constructor.name)
     // onto discard phase
 
     endButton.click();
-    console.log(controller.phase.constructor.name)
     // onto upkeep phase
 
     endButton.click();
-    console.log(controller.phase.constructor.name)
     // onto income phase
 
     endButton.click();
-    console.log(controller.phase.constructor.name)
     // onto main phase
 
     endButton.click();
-    console.log(controller.phase.constructor.name)
     // onto next (offense phase)
 
     // onto player 2 turn
