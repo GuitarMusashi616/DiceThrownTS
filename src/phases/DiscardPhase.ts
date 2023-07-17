@@ -5,6 +5,7 @@ import { IGameController } from "../game/IGameController";
 import { EndDiscardHandler } from "../handler/EndDiscardHandler";
 import { IEventHandler } from "../handler/IEventHandler";
 import { SellCardHandler } from "../handler/SellCardHandler";
+import { EventType } from "../subscribers/EventType";
 import { IPhase } from "./IPhase";
 
 export class DiscardPhase implements IPhase {
@@ -25,6 +26,7 @@ export class DiscardPhase implements IPhase {
         }
         if (event instanceof End) {
             this.endHandler.handle(event);
+            this.controller.events.notify(EventType.NewPhase);
             return;
         }
     }

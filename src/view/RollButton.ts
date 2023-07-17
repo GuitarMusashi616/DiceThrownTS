@@ -11,6 +11,7 @@ export class RollButton implements IRollButton {
     }
 
     click(whichDice: Array<boolean>): void {
+        console.log("Roll Clicked! %s", whichDice)
         this.controller.handle(new Roll(whichDice))
     }
 }

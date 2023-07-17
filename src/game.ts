@@ -1,51 +1,37 @@
-import * as Phaser from 'phaser';
-import { main, testBasicOffense } from './main';
+import { Configuration } from './configuration';
 
-export default class Demo extends Phaser.Scene
-{
-    constructor ()
-    {
-        super('demo');
-        // const dice = new Dice();
-        // console.log(dice);
-    }
+let config = new Configuration();
 
-    preload ()
-    {
-        this.load.image('logo', 'assets/phaser3-logo.png');
-        this.load.image('libs', 'assets/libs.png');
-        this.load.glsl('bundle', 'assets/plasma-bundle.glsl.js');
-        this.load.glsl('stars', 'assets/starfields.glsl.js');
-    }
-
-    create ()
-    {
-        this.add.shader('RGB Shift Field', 0, 0, 800, 600).setOrigin(0);
-
-        this.add.shader('Plasma', 0, 412, 800, 172).setOrigin(0);
-
-        this.add.image(400, 300, 'libs');
-
-        const logo = this.add.image(400, 70, 'logo');
-
-        this.tweens.add({
-            targets: logo,
-            y: 350,
-            duration: 1500,
-            ease: 'Sine.inOut',
-            yoyo: true,
-            repeat: -1
-        })
+function wireDie(id: string, config: Configuration) {
+    var button = document.getElementById(id);
+    if (button) {
+        button.addEventListener("click", () => config.diceView.click(id));
     }
 }
 
-const config = {
-    type: Phaser.AUTO,
-    backgroundColor: '#125555',
-    width: 800,
-    height: 600,
-    scene: Demo
-};
+function wireRoll(id: string, config: Configuration) {
+    // the roll button
+    var roll = document.getElementById(id)
+    if (roll) {
+        roll.addEventListener("click", () => config.rollButton.click(config.diceView.getToggledDice()))
+    }
+}
 
-const game = new Phaser.Game(config);
-testBasicOffense();
+function wireVoid(id: string, config: Configuration) {
+    // the roll button
+    var button = document.getElementById(id)
+    if (button) {
+        button.addEventListener("click", () => config.endButton.click())
+    }
+}
+
+window.onload = () => {
+    wireDie('dice1', config);
+    wireDie('dice2', config);
+    wireDie('dice3', config);
+    wireDie('dice4', config);
+    wireDie('dice5', config);
+    wireDie('dice6', config);
+    wireRoll('rollButton', config);
+    wireVoid('endButton', config);
+}

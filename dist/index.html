@@ -1,9 +1,100 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet">
     <script src="game.js"></script>
-  </head>
-  <body>
-  </body>
+    <title>Your Bootstrap Layout</title>
+</head>
+<body>
+    <div class="container">
+        <div class="border p-3">
+            <!-- Top Row -->
+            <div class="row align-items-center py-3">
+                <div class="col text-left">
+                    Barbarian
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 60%;"></div>
+                    </div>
+                </div>
+                <div class="col text-center">10 CP</div>
+                <div class="col text-right">
+                    Moon Elf
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 70%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Section -->
+            <div class="row align-items-center py-3">
+                <!-- First Column -->
+                <div class="col text-center">
+                    <button class="btn btn-outline-secondary w-100 py-3">Ability 1</button>
+                    <button class="btn btn-outline-secondary w-100 py-3 mt-3">Ability 2</button>
+                    <button class="btn btn-outline-secondary w-100 py-3 mt-3">Ability 3</button>
+                    <button class="btn btn-outline-secondary w-100 py-3 mt-3">Ability 4</button>
+                </div>
+
+                <!-- Middle Column -->
+                <div class="col text-center">
+                    <textarea class="form-control mb-3" rows="3"></textarea>
+                    <textarea class="form-control" rows="3"></textarea>
+                </div>
+
+                <!-- Last Column -->
+                <div class="col text-center">
+                    <button class="btn btn-outline-secondary w-100 py-3">Ability 5</button>
+                    <button class="btn btn-outline-secondary w-100 py-3 mt-3">Ability 6</button>
+                    <button class="btn btn-outline-secondary w-100 py-3 mt-3">Ability 7</button>
+                    <button class="btn btn-outline-secondary w-100 py-3 mt-3">Ability 8</button>
+                </div>
+            </div>
+
+            <!-- Dice Section -->
+            <div class="row justify-content-center py-3">
+                <div class="col-1 text-center">
+                    <i id="dice1" class="fas fa-dice-one" style="font-size: 48px;"></i>
+                </div>
+                <div class="col-1 text-center">
+                    <i id="dice2" class="fas fa-dice-two" style="font-size: 48px;"></i>
+                </div>
+                <div class="col-1 text-center">
+                    <i id="dice3" class="fas fa-dice-three" style="font-size: 48px;"></i>
+                </div>
+                <div class="col-1 text-center">
+                    <i id="dice4" class="fas fa-dice-four" style="font-size: 48px;"></i>
+                </div>
+                <div class="col-1 text-center">
+                    <i id="dice5" class="fas fa-dice-five" style="font-size: 48px;"></i>
+                </div>
+                <div class="col-1 text-center">
+                    <i id="dice6" class="fas fa-dice-six" style="font-size: 48px;"></i>
+                </div>
+            </div>
+
+            <!-- Bottom Row -->
+            <div class="row align-items-center py-3">
+                <div class="col text-left">
+                    <button type="button" class="btn btn-secondary">Left Arrow</button>
+                </div>
+                <div class="col text-center">
+                    <button type="button" id="rollButton" class="btn btn-primary">Roll</button>
+                    <button type="button" id="selectButton" class="btn btn-primary">Select</button>
+                    <button type="button" id="endButton" class="btn btn-primary">End</button>
+                </div>
+                <div class="col text-right">
+                    <button type="button" class="btn btn-secondary">Right Arrow</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include jQuery and Bootstrap's JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
 </html>
+

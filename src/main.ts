@@ -46,18 +46,14 @@ export function main() {
     console.log(controller);
     console.log(controller.phase);
     
-
     // logs when new events occur
     // const commandLineListener = new CommandLineListener();
     // controller.events.addListener(CommandLineListener);
 
-
     // now when things happen it should be reported
-
 
     // view sends objects that the controller handles
     // controller should send objects updating things
-
 
     // gameloop(controller);
 }
@@ -70,6 +66,7 @@ export function main() {
 //         controller.handle(input);
 //     }
 // }
+
 
 function getController(): IGameController {
     const barbarianCardPile: ICardPile = new CardPile();
@@ -85,6 +82,8 @@ function getController(): IGameController {
     const eventManager: IEventManager = new EventManager();
     const combatResolver: ICombatResolver = new CombatResolver();
     const controller: IGameController = new GameController(playerManager, diceManager, cardExecutor, eventManager, combatResolver);
+
+
     return controller;
 }
 
@@ -118,7 +117,7 @@ export function testBasicOffense() {
     const controller = getController();
 
     const rollButton: IRollButton = new RollButton(controller);
-    const diceView: IDiceView = new DiceView(controller);
+    const diceView: DiceView = new DiceView(controller);
     const abilityView: IAbilityView = new AbilityView(controller);
     const abilitySelector: AbilitySelector = new AbilitySelector(controller);
     const phaseView: PhaseView = new PhaseView(controller);
@@ -177,6 +176,7 @@ export function testBasicOffense() {
     // onto next (offense phase)
 
     // onto player 2 turn
+    return diceView;
 }
 
 
