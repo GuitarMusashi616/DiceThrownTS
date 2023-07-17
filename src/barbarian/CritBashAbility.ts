@@ -3,7 +3,7 @@ import { IGameController } from "../game/IGameController";
 import { BarbarianDiceValues } from "./BarbarianDiceValues";
 
 
-export class SmackAbility implements IAbility {
+export class CritBashAbility implements IAbility {
     private calcDmg(dice: BarbarianDiceValues): number {
         if (dice.swordCount() >= 5) {
             return 8;

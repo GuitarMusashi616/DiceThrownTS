@@ -49,6 +49,33 @@
         return BarbarianDiceValues;
     }());
 
+    var CritBashAbility = /** @class */ (function () {
+        function CritBashAbility() {
+        }
+        CritBashAbility.prototype.calcDmg = function (dice) {
+            if (dice.swordCount() >= 5) {
+                return 8;
+            }
+            if (dice.swordCount() >= 4) {
+                return 6;
+            }
+            if (dice.swordCount() >= 3) {
+                return 4;
+            }
+            return 0;
+        };
+        CritBashAbility.prototype.isPlayable = function (diceValues) {
+            var dice = new BarbarianDiceValues(diceValues);
+            return dice.swordCount() >= 3;
+        };
+        CritBashAbility.prototype.play = function (controller) {
+            var diceValues = controller.dice.getValues();
+            var dice = new BarbarianDiceValues(diceValues);
+            controller.combatResolver.initialAttack = this.calcDmg(dice);
+        };
+        return CritBashAbility;
+    }());
+
     var FortitudeAbility = /** @class */ (function () {
         function FortitudeAbility() {
         }
@@ -75,6 +102,78 @@
             controller.players.getCurrentPlayer().heal(healAmount);
         };
         return FortitudeAbility;
+    }());
+
+    var MightyBlowAbility = /** @class */ (function () {
+        function MightyBlowAbility() {
+        }
+        MightyBlowAbility.prototype.calcDmg = function (dice) {
+            if (dice.swordCount() >= 5) {
+                return 8;
+            }
+            if (dice.swordCount() >= 4) {
+                return 6;
+            }
+            if (dice.swordCount() >= 3) {
+                return 4;
+            }
+            return 0;
+        };
+        MightyBlowAbility.prototype.isPlayable = function (diceValues) {
+            var dice = new BarbarianDiceValues(diceValues);
+            return dice.swordCount() >= 3;
+        };
+        MightyBlowAbility.prototype.play = function (controller) {
+            var diceValues = controller.dice.getValues();
+            var dice = new BarbarianDiceValues(diceValues);
+            controller.combatResolver.initialAttack = this.calcDmg(dice);
+        };
+        return MightyBlowAbility;
+    }());
+
+    var OverpowerAbility = /** @class */ (function () {
+        function OverpowerAbility() {
+        }
+        OverpowerAbility.prototype.calcDmg = function (dice) {
+            return 4;
+        };
+        OverpowerAbility.prototype.isPlayable = function (diceValues) {
+            var dice = new BarbarianDiceValues(diceValues);
+            return dice.swordCount() >= 2 && dice.starCount() >= 2;
+        };
+        OverpowerAbility.prototype.play = function (controller) {
+            var diceValues = controller.dice.getValues();
+            var dice = new BarbarianDiceValues(diceValues);
+            controller.combatResolver.initialAttackTrueDmg = this.calcDmg(dice);
+        };
+        return OverpowerAbility;
+    }());
+
+    var RecklessAbility = /** @class */ (function () {
+        function RecklessAbility() {
+        }
+        RecklessAbility.prototype.calcDmg = function (dice) {
+            if (dice.swordCount() >= 5) {
+                return 8;
+            }
+            if (dice.swordCount() >= 4) {
+                return 6;
+            }
+            if (dice.swordCount() >= 3) {
+                return 4;
+            }
+            return 0;
+        };
+        RecklessAbility.prototype.isPlayable = function (diceValues) {
+            var dice = new BarbarianDiceValues(diceValues);
+            return dice.swordCount() >= 3;
+        };
+        RecklessAbility.prototype.play = function (controller) {
+            var diceValues = controller.dice.getValues();
+            var dice = new BarbarianDiceValues(diceValues);
+            controller.combatResolver.initialAttack = this.calcDmg(dice);
+        };
+        return RecklessAbility;
     }());
 
     var SmackAbility = /** @class */ (function () {
@@ -122,6 +221,33 @@
         return SturdyBlowAbility;
     }());
 
+    var ThickSkinAbility = /** @class */ (function () {
+        function ThickSkinAbility() {
+        }
+        ThickSkinAbility.prototype.calcDmg = function (dice) {
+            if (dice.swordCount() >= 5) {
+                return 8;
+            }
+            if (dice.swordCount() >= 4) {
+                return 6;
+            }
+            if (dice.swordCount() >= 3) {
+                return 4;
+            }
+            return 0;
+        };
+        ThickSkinAbility.prototype.isPlayable = function (diceValues) {
+            var dice = new BarbarianDiceValues(diceValues);
+            return dice.swordCount() >= 3;
+        };
+        ThickSkinAbility.prototype.play = function (controller) {
+            var diceValues = controller.dice.getValues();
+            var dice = new BarbarianDiceValues(diceValues);
+            controller.combatResolver.initialAttack = this.calcDmg(dice);
+        };
+        return ThickSkinAbility;
+    }());
+
     var BarbarianAbilitiesFactory = /** @class */ (function () {
         function BarbarianAbilitiesFactory() {
         }
@@ -130,6 +256,11 @@
                 new SmackAbility(),
                 new SturdyBlowAbility(),
                 new FortitudeAbility(),
+                new OverpowerAbility(),
+                new MightyBlowAbility(),
+                new CritBashAbility(),
+                new RecklessAbility(),
+                new ThickSkinAbility(),
             ];
             return new AbilityManager(abilities);
         };
@@ -721,22 +852,49 @@
         AbilitySelector.prototype.select = function (index) {
             var currentPlayer = this.controller.players.getCurrentPlayer();
             var ability = currentPlayer.abilities.get(index);
+            console.log("ability ".concat(index, " selected: ").concat(ability.constructor.name));
             ability.play(this.controller);
         };
         return AbilitySelector;
     }());
 
+    var ABILITY_IDS = [
+        "ability1",
+        "ability2",
+        "ability3",
+        "ability4",
+        "ability5",
+        "ability6",
+        "ability7",
+        "ability8",
+    ];
     var AbilityView = /** @class */ (function () {
         function AbilityView(controller) {
             this.controller = controller;
         }
         AbilityView.prototype.notify = function (eventType) {
+            if (eventType === EventType.NewPhase) {
+                this.resetHighlight();
+            }
             if (eventType !== EventType.Roll) {
                 return;
             }
             if (!(this.controller.phase instanceof OffensivePhase)) {
                 return;
             }
+            this.highlightPlayable();
+        };
+        AbilityView.prototype.resetHighlight = function () {
+            for (var _i = 0, ABILITY_IDS_1 = ABILITY_IDS; _i < ABILITY_IDS_1.length; _i++) {
+                var id = ABILITY_IDS_1[_i];
+                var button = document.getElementById(id);
+                if (button == null) {
+                    return;
+                }
+                button.style.border = '';
+            }
+        };
+        AbilityView.prototype.highlightPlayable = function () {
             var diceValues = this.controller.dice.getValues();
             var currentPlayer = this.controller.players.getCurrentPlayer();
             var playable = currentPlayer.abilities.getPlayable(diceValues);
@@ -745,6 +903,19 @@
                 if (playable[i]) {
                     console.log("".concat(i + 1, ") ").concat(currentPlayer.abilities.getName(i)));
                 }
+                this.highlight(ABILITY_IDS[i], playable[i]);
+            }
+        };
+        AbilityView.prototype.highlight = function (abilityButtonId, isPlayable) {
+            var button = document.getElementById(abilityButtonId);
+            if (button == null) {
+                return;
+            }
+            if (isPlayable) {
+                button.style.border = '2px solid green';
+            }
+            else {
+                button.style.border = '2px solid red';
             }
         };
         return AbilityView;
@@ -840,6 +1011,48 @@
         return EndButton;
     }());
 
+    var ABILITY_BUTTON_IDS = [
+        "ability1",
+        "ability2",
+        "ability3",
+        "ability4",
+        "ability5",
+        "ability6",
+        "ability7",
+        "ability8",
+    ];
+    // setup the ability names, change them when hero changes
+    var HeroView = /** @class */ (function () {
+        function HeroView(controller) {
+            this.controller = controller;
+        }
+        HeroView.prototype.startup = function () {
+            var currentPlayer = this.controller.players.getCurrentPlayer();
+            for (var i = 0; i < ABILITY_BUTTON_IDS.length; i++) {
+                var abilityId = ABILITY_BUTTON_IDS[i];
+                var abilityName = currentPlayer.abilities.getName(i);
+                this.renameButton(abilityId, abilityName);
+            }
+        };
+        HeroView.prototype.renameButton = function (buttonId, newName) {
+            var abilityButton = document.getElementById(buttonId);
+            if (abilityButton == null) {
+                return;
+            }
+            abilityButton.textContent = newName;
+        };
+        HeroView.prototype.notify = function (eventType) {
+            if (eventType !== EventType.NewPhase) {
+                return;
+            }
+            if (this.controller.phase.constructor.name === "MainPhase") {
+                console.log("Refresh Abilities");
+            }
+        };
+        return HeroView;
+    }());
+
+    var PHASE_VIEW_ID = "phaseView";
     var PhaseView = /** @class */ (function () {
         function PhaseView(controller) {
             this.controller = controller;
@@ -848,7 +1061,13 @@
             if (eventType !== EventType.NewPhase) {
                 return;
             }
-            console.log(this.controller.phase.constructor.name);
+            var label = document.getElementById(PHASE_VIEW_ID);
+            if (label == null) {
+                return;
+            }
+            var phase = this.controller.phase.constructor.name;
+            label.textContent = phase;
+            console.log(phase);
         };
         return PhaseView;
     }());
@@ -880,6 +1099,7 @@
             this.controller = new GameController(this.playerManager, this.diceManager, this.cardExecutor, this.eventManager, this.combatResolver);
             this.rollButton = new RollButton(this.controller);
             this.diceView = new DiceView(this.controller);
+            this.heroView = new HeroView(this.controller);
             this.abilityView = new AbilityView(this.controller);
             this.abilitySelector = new AbilitySelector(this.controller);
             this.phaseView = new PhaseView(this.controller);
@@ -888,6 +1108,9 @@
             this.controller.events.subscribe(this.abilityView);
             this.controller.events.subscribe(this.phaseView);
         }
+        Configuration.prototype.startup = function () {
+            this.heroView.startup();
+        };
         return Configuration;
     }());
 
@@ -912,7 +1135,14 @@
             button.addEventListener("click", function () { return config.endButton.click(); });
         }
     }
+    function wireAbilitySelect(id, num, config) {
+        var button = document.getElementById(id);
+        if (button) {
+            button.addEventListener("click", function () { return config.abilitySelector.select(num); });
+        }
+    }
     window.onload = function () {
+        config.startup();
         wireDie('dice1', config);
         wireDie('dice2', config);
         wireDie('dice3', config);
@@ -921,6 +1151,14 @@
         wireDie('dice6', config);
         wireRoll('rollButton', config);
         wireVoid('endButton', config);
+        wireAbilitySelect('ability1', 0, config);
+        wireAbilitySelect('ability2', 1, config);
+        wireAbilitySelect('ability3', 2, config);
+        wireAbilitySelect('ability4', 3, config);
+        wireAbilitySelect('ability5', 4, config);
+        wireAbilitySelect('ability6', 5, config);
+        wireAbilitySelect('ability7', 6, config);
+        wireAbilitySelect('ability8', 7, config);
     };
 
 })();

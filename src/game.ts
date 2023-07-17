@@ -25,7 +25,15 @@ function wireVoid(id: string, config: Configuration) {
     }
 }
 
+function wireAbilitySelect(id: string, num: number, config: Configuration) {
+    var button = document.getElementById(id)
+    if (button) {
+        button.addEventListener("click", () => config.abilitySelector.select(num));
+    }
+}
+
 window.onload = () => {
+    config.startup();
     wireDie('dice1', config);
     wireDie('dice2', config);
     wireDie('dice3', config);
@@ -34,4 +42,12 @@ window.onload = () => {
     wireDie('dice6', config);
     wireRoll('rollButton', config);
     wireVoid('endButton', config);
+    wireAbilitySelect('ability1', 0, config);
+    wireAbilitySelect('ability2', 1, config);
+    wireAbilitySelect('ability3', 2, config);
+    wireAbilitySelect('ability4', 3, config);
+    wireAbilitySelect('ability5', 4, config);
+    wireAbilitySelect('ability6', 5, config);
+    wireAbilitySelect('ability7', 6, config);
+    wireAbilitySelect('ability8', 7, config);
 }

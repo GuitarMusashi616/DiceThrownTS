@@ -20,8 +20,13 @@ import { AbilitySelector } from "./view/AbilitySelector";
 import { AbilityView } from "./view/AbilityView";
 import { DiceView } from "./view/DiceView";
 import { EndButton } from "./view/EndButton";
+import { HeroView } from "./view/HeroView";
+import { IAbilitySelector } from "./view/IAbilitySelector";
 import { IAbilityView } from "./view/IAbilityView";
+import { IDiceView } from "./view/IDiceView";
 import { IEndButton } from "./view/IEndButton";
+import { IHeroView } from "./view/IHeroView";
+import { IPhaseView } from "./view/IPhaseView";
 import { IRollButton } from "./view/IRollButton";
 import { PhaseView } from "./view/PhaseView";
 import { RollButton } from "./view/RollButton";
@@ -44,17 +49,22 @@ export class Configuration {
 
 
     rollButton: IRollButton = new RollButton(this.controller);
-    diceView: DiceView = new DiceView(this.controller);
+    diceView: IDiceView = new DiceView(this.controller);
 
+    heroView: IHeroView = new HeroView(this.controller);
     abilityView: IAbilityView = new AbilityView(this.controller);
-    abilitySelector: AbilitySelector = new AbilitySelector(this.controller);
+    abilitySelector: IAbilitySelector = new AbilitySelector(this.controller);
 
-    phaseView: PhaseView = new PhaseView(this.controller);
+    phaseView: IPhaseView = new PhaseView(this.controller);
     endButton: IEndButton = new EndButton(this.controller);
 
     constructor() {
         this.controller.events.subscribe(this.diceView);
         this.controller.events.subscribe(this.abilityView);
         this.controller.events.subscribe(this.phaseView);
+    }
+
+    startup() {
+        this.heroView.startup();
     }
 }
