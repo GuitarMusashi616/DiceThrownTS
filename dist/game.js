@@ -8,13 +8,13 @@
         AbilityManager.prototype.get = function (index) {
             var ability = this.abilities[index];
             if (ability === undefined) {
-                throw Error("".concat(index, " does not correspond to an ability in ").concat(this.abilities.map(function (x) { return x.constructor.toString(); })));
+                throw Error("".concat(index, " does not correspond to an ability in ").concat(this.abilities.map(function (x) { return x.getName(); })));
             }
             return ability;
         };
         AbilityManager.prototype.getName = function (index) {
             var ability = this.get(index);
-            return ability.constructor.name;
+            return ability.getName();
         };
         AbilityManager.prototype.getPlayable = function (diceValues) {
             return this.abilities.map(function (x) { return x.isPlayable(diceValues); });
@@ -52,6 +52,9 @@
     var CritBashAbility = /** @class */ (function () {
         function CritBashAbility() {
         }
+        CritBashAbility.prototype.getName = function () {
+            return "Crit Bash";
+        };
         CritBashAbility.prototype.calcDmg = function (dice) {
             if (dice.swordCount() >= 5) {
                 return 8;
@@ -79,6 +82,9 @@
     var FortitudeAbility = /** @class */ (function () {
         function FortitudeAbility() {
         }
+        FortitudeAbility.prototype.getName = function () {
+            return "Fortitude";
+        };
         FortitudeAbility.prototype.calcHeal = function (dice) {
             if (dice.heartCount() >= 5) {
                 return 6;
@@ -107,6 +113,9 @@
     var MightyBlowAbility = /** @class */ (function () {
         function MightyBlowAbility() {
         }
+        MightyBlowAbility.prototype.getName = function () {
+            return "Mighty Blow";
+        };
         MightyBlowAbility.prototype.calcDmg = function (dice) {
             if (dice.swordCount() >= 5) {
                 return 8;
@@ -134,6 +143,9 @@
     var OverpowerAbility = /** @class */ (function () {
         function OverpowerAbility() {
         }
+        OverpowerAbility.prototype.getName = function () {
+            return "Overpower";
+        };
         OverpowerAbility.prototype.calcDmg = function (dice) {
             return 4;
         };
@@ -152,6 +164,9 @@
     var RecklessAbility = /** @class */ (function () {
         function RecklessAbility() {
         }
+        RecklessAbility.prototype.getName = function () {
+            return "Reckless";
+        };
         RecklessAbility.prototype.calcDmg = function (dice) {
             if (dice.swordCount() >= 5) {
                 return 8;
@@ -179,6 +194,9 @@
     var SmackAbility = /** @class */ (function () {
         function SmackAbility() {
         }
+        SmackAbility.prototype.getName = function () {
+            return "Smack";
+        };
         SmackAbility.prototype.calcDmg = function (dice) {
             if (dice.swordCount() >= 5) {
                 return 8;
@@ -206,6 +224,9 @@
     var SturdyBlowAbility = /** @class */ (function () {
         function SturdyBlowAbility() {
         }
+        SturdyBlowAbility.prototype.getName = function () {
+            return "Sturdy Blow";
+        };
         SturdyBlowAbility.prototype.calcDmg = function (dice) {
             return 4;
         };
@@ -224,6 +245,9 @@
     var ThickSkinAbility = /** @class */ (function () {
         function ThickSkinAbility() {
         }
+        ThickSkinAbility.prototype.getName = function () {
+            return "Thick Skin";
+        };
         ThickSkinAbility.prototype.calcDmg = function (dice) {
             if (dice.swordCount() >= 5) {
                 return 8;
@@ -300,6 +324,7 @@
     (function (EventType) {
         EventType[EventType["Roll"] = 0] = "Roll";
         EventType[EventType["NewPhase"] = 1] = "NewPhase";
+        EventType[EventType["EndCombat"] = 2] = "EndCombat";
     })(EventType || (EventType = {}));
 
     var EndIncomeHandler = /** @class */ (function () {
@@ -318,6 +343,9 @@
             this.controller = controller;
             this.endHandler = new EndIncomeHandler(controller);
         }
+        IncomePhase.prototype.getName = function () {
+            return "Income Phase";
+        };
         IncomePhase.prototype.handle = function (event) {
             if (event instanceof End) {
                 this.endHandler.handle(event);
@@ -343,6 +371,9 @@
             this.controller = controller;
             this.endHandler = new EndUpkeepHandler(controller);
         }
+        UpkeepPhase.prototype.getName = function () {
+            return "Upkeep Phase";
+        };
         UpkeepPhase.prototype.handle = function (event) {
             if (event instanceof End) {
                 this.endHandler.handle(event);
@@ -391,6 +422,9 @@
             this.sellCardHandler = new SellCardHandler(controller);
             this.endHandler = new EndDiscardHandler(controller);
         }
+        DiscardPhase.prototype.getName = function () {
+            return "Discard Phase";
+        };
         DiscardPhase.prototype.handle = function (event) {
             if (event instanceof SellCard) {
                 this.sellCardHandler.handle(event);
@@ -440,6 +474,9 @@
             this.rollHandler = new RollHandler(controller);
             this.endHandler = new EndDefensiveHandler(controller);
         }
+        DefensivePhase.prototype.getName = function () {
+            return "Defensive Phase";
+        };
         DefensivePhase.prototype.handle = function (event) {
             if (event instanceof Roll) {
                 this.rollHandler.handle(event);
@@ -481,6 +518,9 @@
             // this.pickCardHandler = pickCardHandler;
             this.endHandler = new EndOffensiveHandler(controller);
         }
+        OffensivePhase.prototype.getName = function () {
+            return "Offensive Phase";
+        };
         OffensivePhase.prototype.handle = function (event) {
             // if (event instanceof ToggleDie) {
             //     this.toggleDieHandler.handle(ToggleDie);
@@ -563,6 +603,9 @@
             this.sellCardHandler = new SellCardHandler(this.controller);
             this.endHandler = new EndMainHandler(this.controller, hasDoneCombat);
         }
+        MainPhase.prototype.getName = function () {
+            return "Main Phase";
+        };
         MainPhase.prototype.handle = function (event) {
             if (event instanceof PickCard) {
                 this.pickCardHandler.handle(event);
@@ -852,7 +895,7 @@
         AbilitySelector.prototype.select = function (index) {
             var currentPlayer = this.controller.players.getCurrentPlayer();
             var ability = currentPlayer.abilities.get(index);
-            console.log("ability ".concat(index, " selected: ").concat(ability.constructor.name));
+            console.log("ability ".concat(index, " selected: ").concat(ability.getName()));
             ability.play(this.controller);
         };
         return AbilitySelector;
@@ -1045,7 +1088,7 @@
             if (eventType !== EventType.NewPhase) {
                 return;
             }
-            if (this.controller.phase.constructor.name === "MainPhase") {
+            if (this.controller.phase instanceof MainPhase) {
                 console.log("Refresh Abilities");
             }
         };
@@ -1057,17 +1100,23 @@
         function PhaseView(controller) {
             this.controller = controller;
         }
-        PhaseView.prototype.notify = function (eventType) {
-            if (eventType !== EventType.NewPhase) {
-                return;
-            }
+        PhaseView.prototype.startup = function () {
+            this.refresh();
+        };
+        PhaseView.prototype.refresh = function () {
             var label = document.getElementById(PHASE_VIEW_ID);
             if (label == null) {
                 return;
             }
-            var phase = this.controller.phase.constructor.name;
-            label.textContent = phase;
-            console.log(phase);
+            var phaseName = this.controller.phase.getName();
+            label.textContent = phaseName;
+            console.log(phaseName);
+        };
+        PhaseView.prototype.notify = function (eventType) {
+            if (eventType !== EventType.NewPhase) {
+                return;
+            }
+            this.refresh();
         };
         return PhaseView;
     }());
@@ -1108,8 +1157,10 @@
             this.controller.events.subscribe(this.abilityView);
             this.controller.events.subscribe(this.phaseView);
         }
+        // Methods that must be called after document / window loads
         Configuration.prototype.startup = function () {
             this.heroView.startup();
+            this.phaseView.startup();
         };
         return Configuration;
     }());

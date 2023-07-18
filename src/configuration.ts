@@ -64,7 +64,9 @@ export class Configuration {
         this.controller.events.subscribe(this.phaseView);
     }
 
+    // Methods that must be called after document / window loads
     startup() {
         this.heroView.startup();
+        this.phaseView.startup();
     }
 }

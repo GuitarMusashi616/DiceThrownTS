@@ -11,14 +11,14 @@ export class AbilityManager implements IAbilityManager {
     get(index: number): IAbility {
         const ability = this.abilities[index];
         if (ability === undefined) {
-            throw Error(`${index} does not correspond to an ability in ${this.abilities.map(x => x.constructor.toString())}`)
+            throw Error(`${index} does not correspond to an ability in ${this.abilities.map(x => x.getName())}`)
         }
         return ability  
     }
 
     getName(index: number): string {
         const ability = this.get(index);
-        return ability.constructor.name;
+        return ability.getName();
     }
 
     getPlayable(diceValues: number[]): boolean[] {

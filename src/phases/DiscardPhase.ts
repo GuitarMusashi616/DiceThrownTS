@@ -19,6 +19,10 @@ export class DiscardPhase implements IPhase {
         this.endHandler = new EndDiscardHandler(controller);
     }
 
+    getName(): string {
+        return "Discard Phase"
+    }
+
     handle(event: IEvent): void {
         if (event instanceof SellCard) {
             this.sellCardHandler.handle(event);

@@ -4,6 +4,10 @@ import { BarbarianDiceValues } from "./BarbarianDiceValues";
 
 
 export class ThickSkinAbility implements IAbility {
+    getName(): string {
+        return "Thick Skin"
+    }
+
     private calcDmg(dice: BarbarianDiceValues): number {
         if (dice.swordCount() >= 5) {
             return 8;

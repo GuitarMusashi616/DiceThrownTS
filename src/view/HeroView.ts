@@ -1,5 +1,6 @@
 import { assert } from "console";
 import { IGameController } from "../game/IGameController";
+import { MainPhase } from "../phases/MainPhase";
 import { EventType } from "../subscribers/EventType";
 import { ISubscriber } from "../subscribers/ISubsriber";
 import { IHeroView } from "./IHeroView";
@@ -45,7 +46,7 @@ export class HeroView implements IHeroView {
             return;
         }
 
-        if (this.controller.phase.constructor.name === "MainPhase") {
+        if (this.controller.phase instanceof MainPhase) {
             console.log("Refresh Abilities");
         }
     }

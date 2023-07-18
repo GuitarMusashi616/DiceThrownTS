@@ -14,6 +14,10 @@ export class IncomePhase implements IPhase {
         this.endHandler = new EndIncomeHandler(controller);
     }
 
+    getName(): string {
+        return "Income Phase"
+    }
+
     handle(event: IEvent): void {
         if (event instanceof End) {
             this.endHandler.handle(event);

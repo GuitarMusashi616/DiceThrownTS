@@ -14,6 +14,10 @@ export class UpkeepPhase implements IPhase {
         this.endHandler = new EndUpkeepHandler(controller);
     }
 
+    getName(): string {
+        return "Upkeep Phase"
+    }
+
     handle(event: IEvent): void {
         if (event instanceof End) {
             this.endHandler.handle(event);

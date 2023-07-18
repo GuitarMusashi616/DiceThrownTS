@@ -21,6 +21,10 @@ export class DefensivePhase implements IPhase {
         this.endHandler = new EndDefensiveHandler(controller);
     }
 
+    getName(): string {
+        return "Defensive Phase"
+    }
+
     handle(event: IEvent): void {
         if (event instanceof Roll) {
             this.rollHandler.handle(event);

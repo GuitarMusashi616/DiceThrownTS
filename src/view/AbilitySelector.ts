@@ -14,7 +14,7 @@ export class AbilitySelector implements IAbilitySelector {
     select(index: number) {
         const currentPlayer = this.controller.players.getCurrentPlayer();
         const ability = currentPlayer.abilities.get(index);
-        console.log(`ability ${index} selected: ${ability.constructor.name}`);
+        console.log(`ability ${index} selected: ${ability.getName()}`);
         ability.play(this.controller);
     }
 }

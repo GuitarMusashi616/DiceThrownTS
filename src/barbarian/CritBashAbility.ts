@@ -4,6 +4,10 @@ import { BarbarianDiceValues } from "./BarbarianDiceValues";
 
 
 export class CritBashAbility implements IAbility {
+    getName(): string {
+        return "Crit Bash"
+    }
+
     private calcDmg(dice: BarbarianDiceValues): number {
         if (dice.swordCount() >= 5) {
             return 8;

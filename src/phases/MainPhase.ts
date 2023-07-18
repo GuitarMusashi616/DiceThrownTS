@@ -31,6 +31,10 @@ export class MainPhase implements IPhase {
         this.endHandler = new EndMainHandler(this.controller, hasDoneCombat);
     }
 
+    getName(): string {
+        return "Main Phase"
+    }
+
     handle(event: IEvent): void {
         if (event instanceof PickCard) {
             this.pickCardHandler.handle(event);

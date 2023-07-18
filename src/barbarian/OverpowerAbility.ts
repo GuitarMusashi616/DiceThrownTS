@@ -3,6 +3,10 @@ import { IGameController } from "../game/IGameController";
 import { BarbarianDiceValues } from "./BarbarianDiceValues";
 
 export class OverpowerAbility implements IAbility {
+    getName(): string {
+        return "Overpower"
+    }
+
     private calcDmg(dice: BarbarianDiceValues): number {
         return 4
     }

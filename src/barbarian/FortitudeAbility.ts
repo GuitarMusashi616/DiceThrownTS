@@ -3,6 +3,10 @@ import { IGameController } from "../game/IGameController";
 import { BarbarianDiceValues } from "./BarbarianDiceValues";
 
 export class FortitudeAbility implements IAbility {
+    getName(): string {
+        return "Fortitude"
+    }
+
     calcHeal(dice: BarbarianDiceValues): number {
         if (dice.heartCount() >= 5) {
             return 6;

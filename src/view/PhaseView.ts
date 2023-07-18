@@ -12,16 +12,24 @@ export class PhaseView implements IPhaseView {
         this.controller = controller;
     }
 
-    notify(eventType: EventType): void {
-        if (eventType !== EventType.NewPhase) {
-            return;
-        }
+    startup() {
+        this.refresh();
+    }
+
+    refresh() {
         let label = document.getElementById(PHASE_VIEW_ID);
         if (label == null) {
             return;
         }
-        let phase = this.controller.phase.constructor.name;
-        label.textContent = phase;
-        console.log(phase);
+        let phaseName = this.controller.phase.getName();
+        label.textContent = phaseName;
+        console.log(phaseName);
+    }
+
+    notify(eventType: EventType): void {
+        if (eventType !== EventType.NewPhase) {
+            return;
+        }
+        this.refresh();
     }
 }

@@ -4,6 +4,10 @@ import { BarbarianDiceValues } from "./BarbarianDiceValues";
 
 
 export class RecklessAbility implements IAbility {
+    getName(): string {
+        return "Reckless"
+    }
+
     private calcDmg(dice: BarbarianDiceValues): number {
         if (dice.swordCount() >= 5) {
             return 8;

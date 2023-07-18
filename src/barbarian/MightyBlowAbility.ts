@@ -4,6 +4,10 @@ import { BarbarianDiceValues } from "./BarbarianDiceValues";
 
 
 export class MightyBlowAbility implements IAbility {
+    getName(): string {
+        return "Mighty Blow"
+    }
+
     private calcDmg(dice: BarbarianDiceValues): number {
         if (dice.swordCount() >= 5) {
             return 8;

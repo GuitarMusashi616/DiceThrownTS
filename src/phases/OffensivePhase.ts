@@ -29,6 +29,10 @@ export class OffensivePhase implements IPhase {
         this.endHandler = new EndOffensiveHandler(controller);
     }
 
+    getName(): string {
+        return "Offensive Phase"
+    }
+
     handle(event: IEvent): void {
         // if (event instanceof ToggleDie) {
         //     this.toggleDieHandler.handle(ToggleDie);
